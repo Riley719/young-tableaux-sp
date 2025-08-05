@@ -2,36 +2,45 @@
 
 #import table: cell
 #let standard-young-tableaux-sp(
-  type: ((1,2,3), (4,5), (6,)),
+  shape: ((1,2,3), (4,5), (6,)),
   cellsize: 1.1em,
   fontsize: 0.7em,
-
 ) = {
-  let tableaucells = calc.max(type.len(), type.at(0).len())
+  let tableaucells = calc.max(shape.len(), shape.at(0).len())
   let cells = ()
   let columnsize = ()
   let rowsize = ()
   let i = 0
 
-  while i < type.at(0).len() {
+  while i < shape.at(0).len() {
     columnsize.push(cellsize)
     i += 1
   }
   i = 0
-  while i < type.len() {
+  while i < shape.len() {
     rowsize.push(cellsize)
     i += 1
   }
 
-  for (y, row-length) in type.enumerate() {
+  for (y, row-length) in shape.enumerate() {
     let x = 0
-    while x < type.at(0).len() {
-      if x < type.at(y).len() {
-        cells.push(
-          cell(x: x,
-              y: y,
-          )[#text(size: fontsize)[#type.at(y).at(x)]],
-        )
+    while x < shape.at(0).len() {
+      if x < shape.at(y).len() {
+        if type(shape.at(y).at(x)) == int {
+          cells.push(
+            cell(x: x,
+                y: y
+            )[#text(size: fontsize)[#shape.at(y).at(x)]],
+          )
+        } else {
+          cells.push(
+            cell(x: x,
+                y: y,
+                stroke: shape.at(y).at(x).at(1),
+                fill: shape.at(y).at(x).at(2)
+            )[#shape.at(y).at(x).at(0)],
+          )
+        }
       } else {
         cells.push(
           cell(x: x,
@@ -101,16 +110,16 @@
 
 ブロック数4のStandard Young Tableaux をすべて列挙しよう。
 
-(1) #standard-young-tableaux-sp(type: my-tableau1) と\
-(2) #standard-young-tableaux-sp(type: my-tableau2) と  #standard-young-tableaux-sp(type: my-tableau3) と #standard-young-tableaux-sp(type: my-tableau4) と\
-(3) #standard-young-tableaux-sp(type: my-tableau5) と 
-#standard-young-tableaux-sp(type: my-tableau6) と\
-(4) #standard-young-tableaux-sp(type: my-tableau7) と 
-#standard-young-tableaux-sp(type: my-tableau8) と 
-#standard-young-tableaux-sp(type: my-tableau9) と\
-(5) #standard-young-tableaux-sp(type: my-tableau10) で以上である。
+(1) #standard-young-tableaux-sp(shape: my-tableau1) と\
+(2) #standard-young-tableaux-sp(shape: my-tableau2) と  #standard-young-tableaux-sp(shape: my-tableau3) と #standard-young-tableaux-sp(shape: my-tableau4) と\
+(3) #standard-young-tableaux-sp(shape: my-tableau5) と 
+#standard-young-tableaux-sp(shape: my-tableau6) と\
+(4) #standard-young-tableaux-sp(shape: my-tableau7) と 
+#standard-young-tableaux-sp(shape: my-tableau8) と 
+#standard-young-tableaux-sp(shape: my-tableau9) と\
+(5) #standard-young-tableaux-sp(shape: my-tableau10) で以上である。
 
-(1) の #standard-young-tableaux-sp(type: my-tableau1) は自明表現に対応する標準ヤング盤であるとする。このとき #standard-young-tableaux-sp(type: my-tableau10) に関しては符号表現に対応するものである。また、 #standard-young-tableaux-sp(type: my-tableau3) と #standard-young-tableaux-sp(type: my-tableau8) は転置の関係にある。ゆえにこれらから計算される$"Cont"(4)$の元は互いに$-1$倍の関係である。パッケージのすごさを伝えるために大きくしてみよう。 #standard-young-tableaux-sp(type: my-tableau7, cellsize: 1cm) 小さくもできるぞ！ #standard-young-tableaux-sp(type: my-tableau2, cellsize: 0.5em)
+(1) の #standard-young-tableaux-sp(shape: my-tableau1) は自明表現に対応する標準ヤング盤であるとする。このとき #standard-young-tableaux-sp(shape: my-tableau10) に関しては符号表現に対応するものである。また、 #standard-young-tableaux-sp(shape: my-tableau3) と #standard-young-tableaux-sp(shape: my-tableau8) は転置の関係にある。ゆえにこれらから計算される$"Cont"(4)$の元は互いに$-1$倍の関係である。パッケージのすごさを伝えるために大きくしてみよう。 #standard-young-tableaux-sp(shape: my-tableau7, cellsize: 1cm) 小さくもできるぞ！ #standard-young-tableaux-sp(shape: my-tableau2, cellsize: 0.5em)
 
 頑張れば巨大な標準ヤング盤も作れる。
 
@@ -126,7 +135,17 @@
 )
 
 #align(center)[
-  #standard-young-tableaux-sp(type: my-tableau100, cellsize: 1.7em, fontsize: 10pt)
+  #standard-young-tableaux-sp(shape: my-tableau100, cellsize: 1.7em, fontsize: 10pt)
 ]
 
 各正方形ブロックの大きさと文字の大きさはユーザーが指定できる。#standard-young-tableaux-sp(fontsize: 5pt)
+
+#pagebreak()
+
+#let my-tableau11 = (
+  ((1, purple, yellow), (2, green, maroon), (3, black, lime), (4, navy, orange), (5, olive, silver)),
+  ((6, teal, red), (7, maroon, aqua), (8, blue, gray), (9, fuchsia, white)),
+  ((10, orange, eastern), (11, lime, silver), (12, green, white)),
+)
+
+#standard-young-tableaux-sp(shape: my-tableau11, cellsize: 1.2em, fontsize: 0.8em)
